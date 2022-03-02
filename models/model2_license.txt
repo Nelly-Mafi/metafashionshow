@@ -1,0 +1,11 @@
+Model Information:
+* title:	Emily Red
+* source:	https://sketchfab.com/3d-models/emily-red-18e3c057fd594dd28385042e7bffb5fc
+* author:	Ian.Bongat (https://sketchfab.com/Ian.Bongat)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Emily Red" (https://sketchfab.com/3d-models/emily-red-18e3c057fd594dd28385042e7bffb5fc) by Ian.Bongat (https://sketchfab.com/Ian.Bongat) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
