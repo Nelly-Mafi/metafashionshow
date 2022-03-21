@@ -1,147 +1,427 @@
-<!-- Fashion in the Metaverse Code -->
-
-<!--
-NELLY M
-PROFESSOR: Daniel Wildberger
-EMILY CARR UNIVERSITY OF ART + DESIGN
--->
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">    
-    <title>FASHION IN THE METAVERSE PROTOTYPE VR</title>
+	<head>
+		<meta charset="utf-8">
+		<title>Fashion in the Metaverse</title>
+		<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@5/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-layout-component@5.3.0/dist/aframe-layout-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>        
-    <script src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.js"></script>
-       
-
-  </head>
-
-  <body>
-    <a-scene>
-        
-        <!-- 3D ASSETS -->  
-
-        <a-assets>
-
-            <!-- 
-            <a-asset-item
-            id="MODEL1"
-            src="models/model1.gltf"
-            ></a-asset-item>
-            -->
-
-            <a-asset-item
-            id="MODEL1"
-            src="models/model1.gltf"
-            ></a-asset-item>
-
-            <a-asset-item
-            id="RUNWAY"
-            src="models/runway.gltf"
-            ></a-asset-item>
-            
-
-            <!-- SKY -->
-            <img id="ROOM" crossorigin="anonymous" src="images/room.jpeg">
-
-            <!-- PLANE -->
-            <img id="PLANE" crossorigin="anonymous" src="images/plane.jpg">
-
-
-            <!-- INTERFACE -->  
-            <img id="INTERFACE" crossorigin="anonymous" src="images/interface.png">              
- 
-            
-            
-
-        </a-assets>    
-      
-
-    <!-- 360 background -->
-    <!-- <a-sky id="city" radius="10" src="#city"></a-sky> -->
-
-    <a-sky id="sky" radius="25" src="#ROOM"></a-sky>
-
-    <!-- PLANE -->
-    <a-plane position="0 -0.85 -4" rotation="-90 0 0" width="50" height="50" color="black"></a-plane>
-
-
-    <!--3D Asset Placement-->
-            
-    <!-- MODELS -->
-    
-    <!--
-    <a-entity gltf-model="#MODEL1"
-    position="1 0 -2" 
-    rotation="0 270 0"></a-entity>
-    -->
-
-    <a-entity gltf-model="#MODEL1"
-    position="1 0 -2" 
-    rotation="0 270 0"
-    scale="1.3 1.3 1.3"></a-entity>
-
-    <!-- RUNWAY -->
-    <a-entity gltf-model="#RUNWAY"
-    position="1 -0.85 -7" 
-    rotation="0 270 0"
-    scale="0.0005 0.0005 0.0005"></a-entity>
-    
-    <!-- OBJECTS IN ROOM -->
-    
-
-    <!--CLICKABLE OBJECTS-->
-
-
-    <!--NON-CLICKABLE OBJECTS-->
-
-
-    <!---------------------------INTERFACE-------------------------------->     
-
-    <a-image src="#INTERFACE" width="2.24" height="2.184" position="2.5 1.7 -2.5" rotation="0 0 0" opacity="0.85"></a-image>
-
-    
-
-
-    <!------------------------LIGHTING------------------------------>
-    
-    <!---Directional Light---> 
-    
-
-    
-    <!---Ambient Lighting--->
-    
-
-
-    <!---Custom Point Lights--->
-        
-
-    
-    <!-----CAMERA + CURSOR---->
-
-        <a-entity position="1.8 -1 0.6" rotation="0 0 0">
-            <a-camera user-height="0">
-                
-                
-                
-                <a-cursor 
-                id="cursor" 
-                animation__click="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; easing: easeInCubic; dur: 150; startEvents: click" 
-                animation__clickreset="property: scale; to: 1 1 1; dur: 1; startEvents: animationcomplete__click"
-                animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; easing: easeInCubic; dur: 150; startEvents: fusing"
-                ></a-cursor>
+		<script src="js/aframe-gui.js"></script>
+		<!-- <script src="js/gui-env.js"></script> -->
 
 
 
-            
-            </a-camera>
-        </a-entity>
 
-    </a-scene>
-  </body>
+		<script>
+			//register component + schema objects (and property types)
+			AFRAME.registerComponent('counter', {
+			schema: {
+				el: {type: 'selector'},
+				lik:{type: 'int', default: 0},
+				dislik:{type: 'int', default: 0},
+			},
+			//life-cycle method "init"
+			init: function () {
+				var sceneEl = document.querySelector('a-scene'); 
+				var likBoard = document.querySelector('#likeText');
+				var dislikBoard = document.querySelector('#dislikeText');
+				var nameUpdate = document.querySelector('#clothName');
+
+				var els= sceneEl.querySelectorAll('#likeLink, #dislikeLink')
+				
+				//sceneEl.querySelector('#dislikeLink').addEventListener('click', evt => {
+				
+				for (let i = 1; i < els.length; i++){
+
+
+					if(document.querySelector('#likeLink')){
+						sceneEl.querySelector('#likeLink').addEventListener('click', evt => {
+						this.data.lik++;
+					
+
+						if(this.data.lik == 1 && this.data.lik + this.data.dislik <= 3) {
+
+							window.klik = function() {
+								var modelG = document.getElementById("modelG");
+								modelG.setAttribute('visible', 'false');
+								var modelR = document.getElementById("modelR");
+								modelR.setAttribute('visible', 'false');
+								var modelB = document.getElementById("modelB");
+								modelB.setAttribute('visible', 'true');
+							}
+
+							var newLik = 'like: ' + this.data.lik 
+							likBoard.setAttribute('text', 'value',  newLik)
+
+							if(this.data.dislik == 0){
+
+								var newName = 'Titan dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+							else if(this.data.dislik == 1){
+								var newName = 'Xena dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+							
+
+
+						}
+						else if(this.data.lik == 2 && this.data.lik + this.data.dislik <= 3) {
+
+							window.klik = function() {
+								var modelG = document.getElementById("modelG");
+								modelG.setAttribute('visible', 'false');
+								var modelR = document.getElementById("modelR");
+								modelR.setAttribute('visible', 'false');
+								var modelB = document.getElementById("modelB");
+								modelB.setAttribute('visible', 'true');
+							}
+
+
+							var newLik = 'like: ' + this.data.lik 
+							likBoard.setAttribute('text', 'value',  newLik)
+
+							if(this.data.dislik == 0){
+								var newName = 'Xena dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+									
+						
+						}
+
+						else if(this.data.lik == 3 && this.data.lik + this.data.dislik <= 3) {
+							var newLik = 'like: ' + this.data.lik 
+							likBoard.setAttribute('text', 'value',  newLik)
+						}  
+						
+						
+					});	
+					}
+
+					if(document.querySelector('#dislikeLink')){
+						sceneEl.querySelector('#dislikeLink').addEventListener('click', evt => {
+						this.data.dislik++;
+
+
+						if(this.data.dislik == 1 && this.data.lik + this.data.dislik <= 3) {
+
+							window.klik = function() {
+								var modelG = document.getElementById("modelG");
+								modelG.setAttribute('visible', 'false');
+								var modelR = document.getElementById("modelR");
+								modelR.setAttribute('visible', 'false');
+								var modelB = document.getElementById("modelB");
+								modelB.setAttribute('visible', 'true');
+							}
+
+							var newDislik = 'pass: ' + this.data.dislik 
+							dislikBoard.setAttribute('text', 'value',  newDislik)
+
+							if(this.data.lik == 0){
+
+								var newName = 'Titan dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+							else if(this.data.lik == 1){
+								var newName = 'Xena dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+							
+						}
+						else if(this.data.dislik == 2 && this.data.lik + this.data.dislik <= 3) {
+
+							window.klik = function() {
+								var modelG = document.getElementById("modelG");
+								modelG.setAttribute('visible', 'false');
+								var modelR = document.getElementById("modelR");
+								modelR.setAttribute('visible', 'false');
+								var modelB = document.getElementById("modelB");
+								modelB.setAttribute('visible', 'true');
+							}
+
+							var newDislik = 'pass: ' + this.data.dislik 
+							dislikBoard.setAttribute('text', 'value',  newDislik) 
+
+							if(this.data.lik == 0){
+								var newName = 'Xena dress'
+								nameUpdate.setAttribute('value', newName)
+							}
+							
+						}
+						else if(this.data.dislik == 3 && this.data.lik + this.data.dislik <= 3) {
+
+							var newDislik = 'pass: ' + this.data.dislik 
+							dislikBoard.setAttribute('text', 'value',  newDislik)
+
+						}            
+					});					
+					}
+				}
+			}
+			});
+
+		</script>
+
+
+
+
+		<script>
+			window.klik = function() {
+				console.log("interacted");
+
+				var modelR = document.getElementById("modelR");
+				modelR.setAttribute('visible', 'false');
+				var modelB = document.getElementById("modelB");
+				modelB.setAttribute('visible', 'false');
+				var modelG = document.getElementById("modelG");
+				modelG.setAttribute('visible', 'true');
+			}	
+		</script>
+
+
+	</head>
+
+
+	<!------------------------------------------------------------------------------------------------------>
+	<body>
+		<a-scene gui-env counter>
+			<a-assets>
+				<a-asset-item id="iconfontsolid" src="assets/fonts/fa-solid-900.ttf"></a-asset-item>
+				<a-asset-item id="textfont" src="assets/fonts/PermanentMarker-Regular.ttf"></a-asset-item>
+
+				
+
+				<a-asset-item id="MODEL1" src="models/MODEL1.gltf"></a-asset-item>
+				<a-asset-item id="MODEL2" src="models/MODEL2.gltf"></a-asset-item>
+				<a-asset-item id="MODEL3" src="models/MODEL3.gltf"></a-asset-item>
+
+				<a-asset-item id="STAGE" src="models/SCENE.gltf"></a-asset-item>
+
+
+				<!-- SKY -->
+				<img id="SPACE" crossorigin="anonymous" src="images/purple.jpeg">
+
+
+				<!--AUDIO-->
+				<audio id="click-sound" crossorigin="anonymous" src="audio/click.ogg"></audio>
+
+			</a-assets>
+
+			
+			<!-- 360 background -->
+
+			<a-sky id="sky" radius="35" src="#SPACE"></a-sky>
+
+
+
+			<a-entity gltf-model="#STAGE" 
+			position="-1 -3 -3" 
+			rotation="0 0 0"
+			scale="1 1 1"
+			animation="property: rotation; to: 0 360 0; dur: 500000; easing:linear; loop:true;"></a-entity>
+
+
+			<a-entity id="modelR" gltf-model="#MODEL1" 
+			position="-1 -0.44 -2.5" 
+			rotation="0 0 0"
+			scale="0.4 0.45 0.4"
+			animation="property: rotation; to: 0 360 0; dur: 10000; easing:linear; loop:true;"></a-entity>
+			
+			<a-entity id="modelG" gltf-model="#MODEL2"
+			visible="false"
+			position="-1 -0.44 -2.5" 
+			rotation="0 0 0"
+			scale="0.4 0.45 0.4"
+			animation="property: rotation; to: 0 360 0; dur: 10000; easing:linear; loop:true;"></a-entity>
+
+			<a-entity id="modelB" gltf-model="#MODEL3" 
+			visible="false"
+			position="-1 -0.44 -2.5" 
+			rotation="0 0 0"
+			scale="0.4 0.45 0.4"
+			animation="property: rotation; to: 0 360 0; dur: 10000; easing:linear; loop:true;"></a-entity>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+			<a-entity position="2 1.5 -4" rotation="0 0 0">
+
+				<a-gui-flex-container
+					flex-direction="column" justify-content="center" align-items="normal" component-padding="0.1"
+					opacity="0.5" width="3.5" height="6" panel-color="#000" panel-rounded="0.1"
+					position="0 1.5 -2" rotation="0 0 0"
+					>
+					<a-gui-label
+						width="2.5" height="0.75"
+						value="Fantasy Collection"
+						font-family="assets/fonts/DiplomataSC-Regular.ttf"
+						font-size="0.20"
+						line-height="0.8"
+						letter-spacing="0"
+						margin="0 0 0.5 0"
+					>
+					</a-gui-label>
+
+
+					<a-gui-button id="clothName"
+						width="2.5" 
+						height="0.75" 
+						onclick="testButtonAction"
+						value="Loki dress"
+						font-seize="0.16"
+						margin="0 0 0.05 0"
+						>
+					</a-gui-button>
+
+
+					<a-gui-input
+					width="2.5" height="1.7"
+					onclick="testInputAction"
+					font-size="0.18"
+					value="Material: __ \nToxicity free: __ \nWater conscious: __  \nRecyclable fibre: __ \n\nDigital skin price: __"
+					margin="0 0 0.05 0"
+					>
+					</a-gui-input>
+
+
+
+					<a-gui-flex-container 
+					flex-direction="row" justify-content="center" align-items="normal" component-padding="0.1"
+					opacity="0.5" width="1" height="2" panel-color="#000" panel-rounded="0.1"
+					position="0 1.5 -2" rotation="0 0 0"
+					>
+
+						
+						<a-gui-button id="likeLink"
+						width="1" 
+						height="0.7" 
+						onclick="klik"
+						value="like"
+						sound="on: click; src: #click-sound"
+						>
+						</a-gui-button>
+
+						<a-gui-button id="dislikeLink"
+						width="1" 
+						height="0.7" 
+						onclick="klik"
+						value="pass"
+						sound="on: click; src: #click-sound"
+						>
+						</a-gui-button>
+					</a-gui-flex-container>
+
+
+
+				</a-gui-flex-container>
+
+			</a-entity>
+
+			<!------------------------LIGHTING------------------------------>
+	
+						
+			<!---Ambient Lighting e2ffe0--->
+			
+			<a-entity light="color: #e0faff; 
+							intensity: 2.4" 
+					position="2.34283 4.94715 9.35865">
+			</a-entity>
+
+			<!---Custom Point Lights fe7676 ffeeb3 eefe76 fe7676 fe7676 ffeeb3 fffb8a--->
+				
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 1; 
+							distance: 9; 
+							castShadow: true; 
+							decay: 1.5;" 
+					position="5.47616 2.17827 0.15449" >
+			</a-entity>
+			
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 3; 
+							distance: 8; 
+							castShadow: true; 
+							decay: 1.5" 
+					position="4.62399 2.90699 0.48986">
+			</a-entity>
+			
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 3; 
+							distance: 4; 
+							castShadow: true; 
+							decay: 1.5" 
+					position="-2.70045 3.06637 2.38563">
+			</a-entity>
+			
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 4; 
+							distance: 2.3; 
+							castShadow: true; 
+							decay: 1.5" 
+					position="-3.3626 2.23999 2.05075">
+			</a-entity>
+
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 2; 
+							distance: 6.58; 
+							castShadow: true; 
+							decay: 1.5" 
+					position="4.01921 2.15515 -4.21913">
+			</a-entity>
+			
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 3; 
+							distance: 4.5; 
+							castShadow: true; 
+							decay: 1.5" 
+					position="4.59913 2.90699 -4.56809">
+			</a-entity>
+
+			<a-entity light="type: point; 
+							color: #; 
+							intensity: 3; 
+							distance: 15.13; 
+							castShadow: true; 
+							decay: 2.29" 
+					position="-3.64811 3.04864 -4.4108">
+			</a-entity>	
+
+			<!--CAMERA + CURSOR-->
+
+			<a-entity id="cameraRig" position="0 1.5 0.5">
+				<a-camera look-controls wasd-controls position="0 0 0">
+
+					<a-entity id="likeText" position="-0.8 0.65 -1"
+					material="color: gray; opacity: 0.5" text="value: like: 0; font: https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-entity>
+
+					<a-entity id="dislikeText" position="-0.8 0.60 -1"
+					material="color: gray; opacity: 0.5" text="value: pass: 0; font: https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-entity>
+
+					
+					<a-gui-cursor id="cursor"
+							raycaster="objects: [gui-interactable]"
+							fuse="false"
+					>
+					</a-gui-cursor> <!-- /cursor -->
+				</a-camera> <!-- /camera -->
+			</a-entity>
+
+		</a-scene>
+
+
+	</body>
 </html>
